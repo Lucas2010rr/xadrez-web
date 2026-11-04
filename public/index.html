@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#17212b">
+  <meta name="description" content="Jogue xadrez no navegador, contra outra pessoa ou contra uma IA." />
+  <title>Xadrez Web</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Xadrez Web - início">
+      <span class="brand-mark">♞</span>
+      <span>XADREZ<span class="brand-light">WEB</span></span>
+    </a>
+    <div class="connection-wrap">
+      <span id="connection-dot" class="connection-dot"></span>
+      <span id="connection-label">Modo local</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="play-column" aria-label="Partida de xadrez">
+      <div class="player-card" id="opponent-card">
+        <div class="player-avatar" id="opponent-avatar">♟</div>
+        <div class="player-meta">
+          <strong id="opponent-name">Adversário</strong>
+          <span id="opponent-detail">Peças pretas</span>
+        </div>
+        <div class="clock" id="opponent-clock" aria-label="Relógio do adversário">05:00</div>
+      </div>
+
+      <div class="board-shell">
+        <div id="board" class="board" role="group" aria-label="Tabuleiro de xadrez"></div>
+      </div>
+
+      <div class="player-card" id="player-card">
+        <div class="player-avatar" id="player-avatar">♙</div>
+        <div class="player-meta">
+          <strong id="player-name">Você</strong>
+          <span id="player-detail">Peças brancas</span>
+        </div>
+        <div class="clock" id="player-clock" aria-label="Seu relógio">05:00</div>
+      </div>
+
+      <div class="status-line" role="status" aria-live="polite">
+        <span class="status-indicator"></span>
+        <span id="status">Escolha um modo de jogo para começar.</span>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <section class="panel mode-panel">
+        <div class="panel-heading">
+          <span class="heading-icon">♟</span>
+          <h1>Nova partida</h1>
+        </div>
+        <button id="bot-button" class="button button-primary">Jogar contra a IA</button>
+        <button id="local-button" class="button">Jogar no mesmo dispositivo</button>
+        <div class="section-separator"><span>OU JOGUE ONLINE</span></div>
+        <button id="create-button" class="button button-online">Criar sala online</button>
+        <div class="join-row">
+          <input id="room-code" type="text" maxlength="6" placeholder="Código da sala" autocomplete="off" aria-label="Código da sala">
+          <button id="join-button" class="button button-join">Entrar</button>
+        </div>
+        <p id="room-info" class="room-info" aria-live="polite">O modo online usa o servidor deste próprio site.</p>
+        <button id="copy-room-button" class="text-button hidden" type="button">Copiar código/link da sala</button>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="panel-heading">
+          <span class="heading-icon">☷</span>
+          <h2>Movimentos</h2>
+        </div>
+        <div id="history" class="history" aria-live="polite">
+          <p class="empty-history">As jogadas aparecerão aqui.</p>
+        </div>
+      </section>
+
+      <section class="panel controls-panel">
+        <div class="panel-heading">
+          <span class="heading-icon">⚙</span>
+          <h2>Controles</h2>
+        </div>
+        <div class="controls-grid">
+          <button id="new-game-button" class="button button-small">Nova partida</button>
+          <button id="flip-button" class="button button-small">Girar tabuleiro</button>
+          <button id="undo-button" class="button button-small">Desfazer</button>
+        </div>
+        <p class="help-note">Selecione uma peça e depois a casa de destino. Também é possível arrastar as peças com o mouse ou o dedo.</p>
+      </section>
+
+      <p class="legal-note">Xadrez Web · Regras de xadrez fornecidas por chess.js</p>
+    </aside>
+  </main>
+
+  <div id="promotion-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="promotion-title">
+    <div class="modal-card">
+      <h2 id="promotion-title">Escolha a peça da promoção</h2>
+      <p>Seu peão chegou à última fileira.</p>
+      <div id="promotion-options" class="promotion-options">
+        <button type="button" data-piece="q" aria-label="Promover para dama">♕</button>
+        <button type="button" data-piece="r" aria-label="Promover para torre">♖</button>
+        <button type="button" data-piece="b" aria-label="Promover para bispo">♗</button>
+        <button type="button" data-piece="n" aria-label="Promover para cavalo">♘</button>
+      </div>
+      <button id="cancel-promotion" class="text-button" type="button">Cancelar</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <span>Feito para jogar no computador, tablet e celular.</span>
+  </footer>
+</body>
+</html>
